@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import 'src/locations.dart' as locations;
-import 'homepage.dart' as homepage;
+import 'src/settings_page.dart' as homepage;
 
 void main() => runApp(const MyApp());
 
