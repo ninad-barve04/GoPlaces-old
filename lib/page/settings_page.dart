@@ -8,7 +8,7 @@ class SettingsPage extends StatelessWidget {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: const Text("MapApp"),
+          title: const Text("GoPlaces..."),
           backgroundColor: const Color.fromARGB(255, 8, 214, 118),
           actions: [
             IconButton(

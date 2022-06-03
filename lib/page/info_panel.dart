@@ -3,26 +3,27 @@ import 'package:flutter/material.dart';
 import '../src/locations.dart';
 
 class InfoPanelLayout extends StatelessWidget {
-  InfoPanelLayout(this.idx, this.poi);
+  InfoPanelLayout(this.poi);
 
-  final List<Poi> poi;
-  final int idx;
+  final Poi poi;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       child: Column(
         children: [
-          Image.asset(
-            "assets/images/shaniwarwada.jpeg",
+          Image.network(
+            poi.image,
           ),
-          Center(
-            child: Text(poi[idx].name,
-                textDirection: TextDirection.ltr,
-                style: TextStyle(
-                  fontSize: 32,
-                  color: Colors.black87,
-                )),
+          Container(
+            child: Center(
+                child: Text(poi.name,
+                    textDirection: TextDirection.ltr,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 32,
+                      color: Color.fromARGB(221, 43, 35, 160),
+                    ))),
           )
         ],
       ),

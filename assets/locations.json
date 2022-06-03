@@ -3,82 +3,82 @@
         {
             "address": "Shaniwar Peth, Pune, Maharashtra 411030",
             "id": "aarhus",
-            "image": "https://lh3.googleusercontent.com/tpBMFN5os8K-qXIHiAX5SZEmN5fCzIGrj9FdJtbZPUkC91ookSoY520NYn7fK5yqmh1L1m3F2SJA58v6Qps3JusdrxoFSwk6Ajv2K88",
+            "image": "https://ik.imagekit.io/goplaces/shaniwarwada_uZrR1GY0N.jpeg",
             "lat": 18.519528,
             "lng": 73.855436,
             "name": "Shaniwar Wada",
             "phone": "",
-            "region": "europe"
+            "region": ""
         },
         {
             "address": "Parvati Paytha, Pune, Maharashtra 411009",
             "id": "amsterdam",
-            "image": "https://lh3.googleusercontent.com/gG1zKXcSmRyYWHwUn2Z0MITpdqwb52RAEp3uthG2J5Xl-4_Wz7_WmoM6T_TBg6Ut3L1eF-8XENO10sxVIFdQHilj8iRG29wROpSoug",
+            "image": "https://ik.imagekit.io/goplaces/parvati_y3J86UlzY.jpeg",
             "lat": 18.5006861,
             "lng": 73.8330911,
             "name": "Parvati",
             "phone": "",
-            "region": "europe"
+            "region": ""
         },
         {
             "address": "Opp. Nehru Stadium, Sadashiv Peth, Pune, Maharashtra 411030",
             "id": "ann-arbor",
-            "image": "https://lh3.googleusercontent.com/Iim0OVcAgg9vmXc5ADn9KvOQFplrMZ8hBTg2biiTtuWPy_r56cy4Byx1ROk6coGt7knQdmx_jO45VX1kiCJZ0QzEtS97AP_BYG4F2w",
+            "image": "https://ik.imagekit.io/goplaces/sarasbag_JkUegiDfy.jpeg?ik-sdk-version=javascript-1.4.3&updatedAt=1654223952730",
             "lat": 18.5020565,
             "lng": 73.8505194,
             "name": "Sarasbaug",
-            "phone": "+1 734-332-6500",
-            "region": "north-america"
+            "phone": "",
+            "region": ""
         },
         {
             "address": "Fragkokklisias 7\nAthens 151 25\nGreece",
             "id": "athens",
-            "image": "https://lh3.googleusercontent.com/XroZnqewSrO6KuvXM5hDHtjUJzUcRQLZYfCKs4jP44dKezRvNx58uxaqUKS4fQ2eXzG2TpJNJ1X2xtfBe7Prl5hSG_xjPEF1xLtFodM",
-            "lat": 38.03902,
-            "lng": 23.804595,
+            "image": "https://ik.imagekit.io/goplaces/kelkar_VqxRSTPCX.jpeg?ik-sdk-version=javascript-1.4.3&updatedAt=1654223714418",
+            "lat": 18.510735,
+            "lng": 73.854448,
             "name": "Raja Dinkar Kelkar museum",
             "phone": "",
-            "region": "europe"
+            "region": ""
         },
         {
             "address": "10 10th Street NE\nAtlanta, GA 30309\nUnited States",
             "id": "atlanta",
-            "image": "https://lh3.googleusercontent.com/py7Qvqqoec1MB0dMKnGWn7ju9wET_dIneTb24U-ri8XAsECJnOaBoNmvfa51PIaC0rlsyQvQXvAK8RdLqpkhpkRSzmhNKqb-tY2_",
-            "lat": 33.781827,
-            "lng": -84.387301,
+            "image": "https://ik.imagekit.io/goplaces/kasba_xPot_4Cams.jpeg?ik-sdk-version=javascript-1.4.3&updatedAt=1654223816098",
+            "lat": 18.519064,
+            "lng": 73.857251,
             "name": "Kasba Ganapati Mandir",
-            "phone": "+1 404-487-9000",
-            "region": "north-america"
+            "phone": "",
+            "region": ""
         },
         {
             "address": "500 W 2nd St\nSuite 2900\nAustin, TX 78701\nUnited States",
             "id": "austin",
-            "image": "https://lh3.googleusercontent.com/WFaJgWPdd7xPL7CQHizlqEzLDjT_GUAiWHIWUM0PiVSsv8q3Rjt9QgbyQazuQwYfN5qLORajv8eKSHlKwZo-M89T2Y12zFSxSIme08c",
-            "lat": 30.266035,
-            "lng": -97.749237,
+            "image": "https://ik.imagekit.io/goplaces/dagdushet.jpeg_lgrnDST7F.jpeg?ik-sdk-version=javascript-1.4.3&updatedAt=1654224012294",
+            "lat": 18.516464,
+            "lng": 73.856129,
             "name": "Dagadusheth Mandir",
-            "phone": "+1 512-343-5283",
-            "region": "north-america"
+            "phone": "",
+            "region": ""
         },
         {
             "address": "No. 3, RMZ Infinity \u2013 Tower E\nOld Madras Road\n4th and 5th Floors\nBangalore, 560 016, India",
             "id": "bangalore",
-            "image": "https://lh3.googleusercontent.com/YDyQevoY-D0eZQ9sYHp8dQjpFF5JpLfLK-0OM-uJK1oNK3_LRnGJAM0uXi9qb9UigKnVIIXlIgidxhRlnaB_FPtUOqPzrsCSiFZyoQ",
-            "lat": 12.99332,
-            "lng": 77.660176,
+            "image": "https://ik.imagekit.io/goplaces/shivaji_statue_GqJPB2Ngm.jpeg",
+            "lat": 18.526430,
+            "lng": 73.853271,
             "name": "Shivaji Statue",
-            "phone": "+91-80-67218000",
+            "phone": "",
             "region": "asia-pacific"
         },
         {
             "address": "Wellesley Rd, Shivajinagar, Pune, Maharashtra 411005",
             "id": "bangkok",
-            "image": "https://lh3.googleusercontent.com/nh9uOUPj6iWjKZSHIrnkfGhIWGBb8thguRM5_ehCOkyF-qfwzYciDJFVRSvQ6QxlSA6eZUMkzgdW9zR0Gab2ZZPg8NlB7V_V3wB5",
+            "image": "https://ik.imagekit.io/goplaces/coep_a0ipeIeIm.jpeg?ik-sdk-version=javascript-1.4.3&updatedAt=1654223815881",
             "lat": 18.5293825,
             "lng": 73.8543523,
             "name": "College of Engineering, Pune",
             "phone": "",
-            "region": "asia-pacific"
+            "region": ""
         }
         
     ]

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:main_app/page/info_panel.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 import '../src/locations.dart' as locations;
 import 'settings_page.dart' as settingspage;
+import 'info_panel.dart' as infopanel;
 
 // class HomePage extends StatefulWidget {
 //   const HomePage({Key? key}) : super(key: key);
@@ -52,8 +52,18 @@ class _MapState extends State<MapState> {
 
   final PanelController _pc = PanelController();
   bool _visible = true;
-
+  int currentIndex = 0;
   List<locations.Poi> pois = [];
+  locations.Poi currentPoi = locations.Poi(
+      address: "",
+      id: "",
+      image:
+          "https://ik.imagekit.io/goplaces/GoPlaces-logos_QI1sFe82N.jpeg?ik-sdk-version=javascript-1.4.3&updatedAt=1654224201276",
+      lat: 0.0,
+      lng: 0.0,
+      name: "",
+      phone: "",
+      region: "");
 
   Future<void> _onMapCreated(GoogleMapController controller) async {
     locations.Locations locs = await locations.getPointsOfInterest();
@@ -62,6 +72,7 @@ class _MapState extends State<MapState> {
     setState(() {
       _markers.clear();
 
+      int idx = 0;
       for (final poi in pois) {
         final marker = Marker(
           markerId: MarkerId(poi.name),
@@ -69,7 +80,10 @@ class _MapState extends State<MapState> {
           visible: _visible,
           onTap: () {
             _visible = false;
-            setState(() {});
+            setState(() {
+              currentIndex = idx++;
+              currentPoi = poi;
+            });
             _pc.open();
           },
         );
@@ -87,7 +101,7 @@ class _MapState extends State<MapState> {
     return MaterialApp(
         home: Scaffold(
       appBar: AppBar(
-        title: const Text("MapApp"),
+        title: const Text("GoPlaces..."),
         backgroundColor: const Color.fromARGB(255, 8, 214, 118),
         actions: [
           IconButton(
@@ -107,13 +121,13 @@ class _MapState extends State<MapState> {
         parallaxEnabled: true,
         parallaxOffset: 0.5,
         minHeight: 0,
-        panel: InfoPanelLayout(0, pois),
+        panel: infopanel.InfoPanelLayout(currentPoi),
         borderRadius: radius,
         body: GoogleMap(
           onMapCreated: _onMapCreated,
           initialCameraPosition: const CameraPosition(
-            target: LatLng(18, 73),
-            zoom: 4.0,
+            target: LatLng(18.5293825, 73.8543523),
+            zoom: 12.0,
           ),
           markers: _markers.values.toSet(),
         ),

@@ -1,7 +1,7 @@
     <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.main_app">
    <application
-        android:label="main_app"
+        android:label="GoPlaces"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
 
