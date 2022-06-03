@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'App_info.dart' as App_info;
+import '../src/App_info.dart' as AppInfo;
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({Key? key}) : super(key: key);
@@ -17,37 +17,33 @@ class SettingsPage extends StatelessWidget {
               },
               icon: const Icon(Icons.menu),
             ),
-            
           ],
         ),
         body: Center(
           child: Column(
-            children:<Widget>[
+            children: <Widget>[
               Container(child: MyStatefulWidget()),
               Container(
-              color: Colors.white,
-              height: 50,
-              width: 100,
-            ),
-              Container(child: FlatButton(
-                color: Color.fromARGB(255, 26, 192, 32),
-                textColor: Colors.white,
-                onPressed: () {
-                  Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const App_info.Infopage()),
-                );
-
-                },
-                child: Text('App Info'),
+                color: Colors.white,
+                height: 50,
+                width: 100,
+              ),
+              Container(
+                child: FlatButton(
+                  color: Color.fromARGB(255, 26, 192, 32),
+                  textColor: Colors.white,
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const AppInfo.Infopage()),
+                    );
+                  },
+                  child: Text('App Info'),
                 ),
-                ),
-                
+              ),
             ],
           ),
-          
-          
         ),
       ),
     );
@@ -66,7 +62,9 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
 
   @override
   Widget build(BuildContext context) {
-    DecoratedBox(decoration: BoxDecoration(color: Colors.green),);    
+    DecoratedBox(
+      decoration: BoxDecoration(color: Colors.green),
+    );
     return DropdownButton<String>(
       value: dropdownValue,
       icon: const Icon(Icons.add),
@@ -81,7 +79,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
           dropdownValue = newValue!;
         });
       },
-      items: <String>['Settings','user','log in','log out']
+      items: <String>['Settings', 'user', 'log in', 'log out']
           .map<DropdownMenuItem<String>>((String value) {
         return DropdownMenuItem<String>(
           value: value,
@@ -91,4 +89,3 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
     );
   }
 }
-
