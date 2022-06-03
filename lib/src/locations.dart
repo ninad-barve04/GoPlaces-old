@@ -38,8 +38,8 @@ class Region {
 }
 
 @JsonSerializable()
-class Office {
-  Office({
+class Poi {
+  Poi({
     required this.address,
     required this.id,
     required this.image,
@@ -50,8 +50,8 @@ class Office {
     required this.region,
   });
 
-  factory Office.fromJson(Map<String, dynamic> json) => _$OfficeFromJson(json);
-  Map<String, dynamic> toJson() => _$OfficeToJson(this);
+  factory Poi.fromJson(Map<String, dynamic> json) => _$PoiFromJson(json);
+  Map<String, dynamic> toJson() => _$PoiToJson(this);
 
   final String address;
   final String id;
@@ -66,30 +66,28 @@ class Office {
 @JsonSerializable()
 class Locations {
   Locations({
-    required this.offices,
-    required this.regions,
+    required this.pois,
   });
 
   factory Locations.fromJson(Map<String, dynamic> json) =>
       _$LocationsFromJson(json);
   Map<String, dynamic> toJson() => _$LocationsToJson(this);
 
-  final List<Office> offices;
-  final List<Region> regions;
+  final List<Poi> pois;
 }
 
-Future<Locations> getGoogleOffices() async {
-  const googleLocationsURL = 'https://about.google/static/data/locations.json';
-
-  // Retrieve the locations of Google offices
-  try {
-    final response = await http.get(Uri.parse(googleLocationsURL));
-    if (response.statusCode == 200) {
-      return Locations.fromJson(json.decode(response.body));
-    }
-  } catch (e) {
-    print(e);
-  }
+Future<Locations> getPointsOfInterest() async {
+  // const googleLocationsURL = 'https://about.google/static/data/locations.json';
+  //
+  // // Retrieve the locations of Google offices
+  // try {
+  //   final response = await http.get(Uri.parse(googleLocationsURL));
+  //   if (response.statusCode == 200) {
+  //     return Locations.fromJson(json.decode(response.body));
+  //   }
+  // } catch (e) {
+  //   print(e);
+  // }
 
   // Fallback for when the above HTTP request fails.
   return Locations.fromJson(

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
+class SettingsPage extends StatelessWidget {
+  const SettingsPage({Key? key}) : super(key: key);
 
   Widget build(BuildContext context) {
     return MaterialApp(

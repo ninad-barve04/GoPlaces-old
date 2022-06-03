@@ -4,8 +4,8 @@
             "address": "Shaniwar Peth, Pune, Maharashtra 411030",
             "id": "aarhus",
             "image": "https://lh3.googleusercontent.com/tpBMFN5os8K-qXIHiAX5SZEmN5fCzIGrj9FdJtbZPUkC91ookSoY520NYn7fK5yqmh1L1m3F2SJA58v6Qps3JusdrxoFSwk6Ajv2K88",
-            "lat": 18.519528,
-            "lng": 73.855436,
+            "lat": 18.5194647,
+            "lng": 73.8531288,
             "name": "Shaniwar Wada",
             "phone": "",
             "region": "europe"
@@ -79,6 +79,46 @@
             "name": "College of Engineering, Pune",
             "phone": "",
             "region": "asia-pacific"
+        },
+        {
+            "address": "6th Floor, Tower B, Raycom InfoTech Park\nNo. 2 Kexueyuan South Road\nZhongguancun Beijing 100190",
+            "id": "beijing",
+            "image": "https://lh3.googleusercontent.com/v_tD3VvC8-dnhqSF9xhj5Hx7F_bb3-wieM19i-Ho2C3by6mt7-JpPc7KsYVHUZFqQl5ON3adVEV1N4OlzSvHLrr3sr4GtXErDbGC",
+            "lat": 39.9848878,
+            "lng": 116.3265708,
+            "name": "Jangli Maharaj Mandir",
+            "phone": "+86-10-62503000",
+            "region": "asia-pacific"
+        },
+        {
+            "address": "Boulevard Corporate Tower\nAv. dos Andradas, 3000 - Andares 14-17\nSanta Efig\u00eania\nBelo Horizonte\n30260-070, Brazil",
+            "id": "belo-horizonte",
+            "image": "https://lh3.googleusercontent.com/f7F8gTi9GSgAZR3lv24I1yb-D0wRlDy0lQTcxCB4yJGtSgxrWdKoB3dX3J8SMrjYLwOSXquO3LuGFUE82QUjzVK9buHGNIRUPGpqM3E",
+            "lat": -19.920225,
+            "lng": -43.920845,
+            "name": "Shimla Office",
+            "phone": "+55-31-2128-6800",
+            "region": "latin-america"
+        },
+        {
+            "address": "Tucholskystra\u00dfe 2\n10117 Berlin\nGermany",
+            "id": "berlin",
+            "image": "https://lh3.googleusercontent.com/XcPyEMiSlLdZJq7nh3orGy3UqjtUHdhxXiwn52ZY47wfEChfZNDO78zDy9H0tBeegogZBZpIE0Q9mdVBGN4aQ0M5vfgz8ZWMEe43Mg",
+            "lat": 52.5231079,
+            "lng": 13.39203120000002,
+            "name": "Agricultural College",
+            "phone": "+49 30 303986300",
+            "region": "europe"
+        },
+        {
+            "address": "Carrera 11A 94 - 45\nCentro Empresarial Oxo Centre\nBogota, Colombia",
+            "id": "bogota",
+            "image": "https://lh3.googleusercontent.com/_APoV1zAR0g5_pXVDlT2ovgNQfr3zvjOuj4HFHViiy2ahyjapJMXlYRE48qYMyFTWXJybbK4psz-fQ82QhMhO0keYJ27I8tNTHe_ww",
+            "lat": 4.678267,
+            "lng": -74.046901,
+            "name": "Fergusson College",
+            "phone": "+57 (1) 5939400",
+            "region": "latin-america"
         }
         
     ]
