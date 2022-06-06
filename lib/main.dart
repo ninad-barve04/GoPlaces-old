@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-import 'src/locations.dart' as locations;
-import 'src/App_info.dart' as App_info;
 import 'page/main_map_page.dart' as mainpage;
 
 void main() => runApp(const MyApp());
@@ -20,29 +17,29 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyStatefulWidget extends StatefulWidget {
-  const MyStatefulWidget({Key? key}) : super(key: key);
+class SettingsWidget extends StatefulWidget {
+  const SettingsWidget({Key? key}) : super(key: key);
 
   @override
-  State<MyStatefulWidget> createState() => _MyStatefulWidgetState();
+  State<SettingsWidget> createState() => _SettingsWidget();
 }
 
-class _MyStatefulWidgetState extends State<MyStatefulWidget> {
+class _SettingsWidget extends State<SettingsWidget> {
   String dropdownValue = 'Settings';
 
   @override
   Widget build(BuildContext context) {
-    DecoratedBox(
-      decoration: BoxDecoration(color: Colors.green),
+    const DecoratedBox(
+      decoration: BoxDecoration(color: Colors.blue),
     );
     return DropdownButton<String>(
       value: dropdownValue,
       icon: const Icon(Icons.add),
       elevation: 8,
-      style: const TextStyle(color: Colors.green),
+      style: const TextStyle(color: Colors.blue),
       underline: Container(
         height: 4,
-        color: Color.fromARGB(255, 45, 212, 51),
+        color: const Color.fromARGB(255, 0, 92, 179),
       ),
       onChanged: (String? newValue) {
         setState(() {

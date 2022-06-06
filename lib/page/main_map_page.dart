@@ -3,8 +3,8 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 import '../src/locations.dart' as locations;
-import 'settings_page.dart' as settingspage;
 import 'info_panel.dart' as infopanel;
+import 'app_info.dart' as appinfo;
 
 // class HomePage extends StatefulWidget {
 //   const HomePage({Key? key}) : super(key: key);
@@ -102,19 +102,7 @@ class _MapState extends State<MapState> {
         home: Scaffold(
       appBar: AppBar(
         title: const Text("GoPlaces..."),
-        backgroundColor: const Color.fromARGB(255, 8, 214, 118),
-        actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const settingspage.SettingsPage()),
-              );
-            },
-            icon: const Icon(Icons.menu),
-          ),
-        ],
+        backgroundColor: const Color.fromARGB(255, 0, 92, 179),
       ),
       body: SlidingUpPanel(
         controller: _pc,
@@ -132,6 +120,97 @@ class _MapState extends State<MapState> {
           markers: _markers.values.toSet(),
         ),
       ),
+      drawer: Drawer(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            DrawerHeader(
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  fit: BoxFit.fill,
+                  image: AssetImage('assets/images/drawer.jpg'),
+                ),
+              ),
+              child: Container(
+                child: Column(
+                  children: const [
+                    SizedBox(
+                      height: 10,
+                    ),
+                    CircleAvatar(
+                      radius: 42,
+                      backgroundImage: AssetImage('assets/images/user.jpg'),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Container(child: const MyStatefulWidget()),
+            Container(
+              color: Colors.white,
+              height: 50,
+              width: 100,
+            ),
+            Container(
+              child: FlatButton(
+                color: const Color.fromARGB(255, 0, 92, 179),
+                textColor: Colors.white,
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const appinfo.Infopage()),
+                  );
+                },
+                child: const Text('App Info'),
+              ),
+            ),
+          ],
+        ),
+      ),
     ));
+  }
+}
+
+class MyStatefulWidget extends StatefulWidget {
+  const MyStatefulWidget({Key? key}) : super(key: key);
+
+  @override
+  State<MyStatefulWidget> createState() => _MyStatefulWidgetState();
+}
+
+class _MyStatefulWidgetState extends State<MyStatefulWidget> {
+  String dropdownValue = 'Settings';
+
+  @override
+  Widget build(BuildContext context) {
+    const DecoratedBox(
+      decoration: BoxDecoration(color: Colors.blue),
+    );
+    return DropdownButton<String>(
+      value: dropdownValue,
+      icon: const Icon(Icons.add),
+      elevation: 8,
+      style: const TextStyle(color: Colors.blue),
+      underline: Container(
+        height: 4,
+        color: const Color.fromARGB(255, 0, 92, 179),
+      ),
+      onChanged: (String? newValue) {
+        setState(() {
+          dropdownValue = newValue!;
+        });
+      },
+      items: <String>['Settings', 'user', 'log in', 'log out']
+          .map<DropdownMenuItem<String>>((String value) {
+        return DropdownMenuItem<String>(
+          value: value,
+          child: Text(value),
+        );
+      }).toList(),
+    );
   }
 }

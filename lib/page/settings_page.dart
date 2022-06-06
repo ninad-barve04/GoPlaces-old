@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import '../src/App_info.dart' as AppInfo;
+import 'app_info.dart' as appinfo;
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({Key? key}) : super(key: key);
 
+  @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
@@ -22,7 +23,7 @@ class SettingsPage extends StatelessWidget {
         body: Center(
           child: Column(
             children: <Widget>[
-              Container(child: MyStatefulWidget()),
+              Container(child: const MyStatefulWidget()),
               Container(
                 color: Colors.white,
                 height: 50,
@@ -30,16 +31,16 @@ class SettingsPage extends StatelessWidget {
               ),
               Container(
                 child: FlatButton(
-                  color: Color.fromARGB(255, 26, 192, 32),
+                  color: const Color.fromARGB(255, 26, 192, 32),
                   textColor: Colors.white,
                   onPressed: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const AppInfo.Infopage()),
+                          builder: (context) => const appinfo.Infopage()),
                     );
                   },
-                  child: Text('App Info'),
+                  child: const Text('App Info'),
                 ),
               ),
             ],
@@ -62,7 +63,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
 
   @override
   Widget build(BuildContext context) {
-    DecoratedBox(
+    const DecoratedBox(
       decoration: BoxDecoration(color: Colors.green),
     );
     return DropdownButton<String>(
@@ -72,7 +73,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
       style: const TextStyle(color: Colors.green),
       underline: Container(
         height: 4,
-        color: Color.fromARGB(255, 45, 212, 51),
+        color: const Color.fromARGB(255, 45, 212, 51),
       ),
       onChanged: (String? newValue) {
         setState(() {
