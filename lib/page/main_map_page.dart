@@ -153,7 +153,7 @@ class _MapState extends State<MapState> {
                   ),
                   CircleAvatar(
                     radius: 42,
-                    backgroundImage: AssetImage('assets/images/user.jpg'),
+                    backgroundImage: AssetImage('GoogleUserCircleAvatar(identity: user)'),
                   ),
                   SizedBox(
                     height: 10,
@@ -164,6 +164,7 @@ class _MapState extends State<MapState> {
               ),
               Container(
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   ListTile(
                     leading: GoogleUserCircleAvatar(identity: user),
@@ -182,7 +183,7 @@ class _MapState extends State<MapState> {
               width: 100,
             ),
               Container(child: FlatButton(
-                color: Color.fromARGB(255, 26, 192, 32),
+                color: Colors.blue,
                 textColor: Colors.white,
                 onPressed: () {
                   Navigator.push(
@@ -248,10 +249,11 @@ class _MapState extends State<MapState> {
               ),
               Container(
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   const SizedBox(height: 20,),
                   const Text(
-                    'Not signed in',
+                    '                    Not signed in',
                     style: TextStyle(fontSize: 20),
                   ),
                   const SizedBox(height: 10,),
@@ -266,7 +268,7 @@ class _MapState extends State<MapState> {
               width: 100,
             ),
               Container(child: FlatButton(
-                color: Color.fromARGB(255, 26, 192, 32),
+                color: Colors.blue,
                 textColor: Colors.white,
                 onPressed: () {
                   Navigator.push(
