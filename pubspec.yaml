@@ -37,6 +37,7 @@ dependencies:
   google_maps_flutter: ^2.1.6
   http: ^0.13.4
   json_serializable: ^6.2.0
+  google_sign_in: ^5.3.3
   sliding_up_panel: ^2.0.0+1
 
 dev_dependencies:
