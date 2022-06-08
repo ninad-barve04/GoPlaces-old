@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "410843017965",
+    "project_id": "goplaces-8d00b",
+    "storage_bucket": "goplaces-8d00b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:410843017965:android:0d04bdb0114357ff6392e4",
+        "android_client_info": {
+          "package_name": "com.example.main_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "410843017965-p3tfiavufl2u8706c2v6u28vgadhkgge.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.main_app",
+            "certificate_hash": "a3e5c2e72777824d510883a6ffe140f3bfd3575a"
+          }
+        },
+        {
+          "client_id": "410843017965-ghduh6p139lg7ldglpb4ngnicnuu874r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD6GREHX_E1RjCI3-w8EVrcPNIbKUkNq24"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "410843017965-ghduh6p139lg7ldglpb4ngnicnuu874r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
