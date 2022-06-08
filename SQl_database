@@ -1,0 +1,84 @@
+Enter password: 
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 14
+Server version: 5.7.26-0ubuntu0.16.04.1 (Ubuntu)
+
+Copyright (c) 2000, 2019, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> SHOW DATABASES;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| EmpData            |
+| angularjs          |
+| ash                |
+| mysql              |
+| performance_schema |
+| project            |
+| sys                |
+| testdb             |
++--------------------+
+9 rows in set (0.35 sec)
+
+mysql> CREATE DATABASE mydatabase;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> SHOW DATABASES;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| EmpData            |
+| angularjs          |
+| ash                |
+| mydatabase         |
+| mysql              |
+| performance_schema |
+| project            |
+| sys                |
+| testdb             |
++--------------------+
+10 rows in set (0.00 sec)
+
+mysql> use mydatabase
+Database changed
+
+mysql> create table info( Name VARCHAR(100) NOT NULL, description VARCHAR(500) NOT NULL, latitude DOUBLE NOT NULL, longitude DOUBLE NOT NULL, peoplevisited INT, likes INT, rating INT, locationtype VARCHAR(100));
+Query OK, 0 rows affected (0.33 sec)
+
+mysql> DESCRIBE info;
++---------------+--------------+------+-----+---------+-------+
+| Field         | Type         | Null | Key | Default | Extra |
++---------------+--------------+------+-----+---------+-------+
+| Name          | varchar(100) | NO   |     | NULL    |       |
+| description   | varchar(500) | NO   |     | NULL    |       |
+| latitude      | double       | NO   |     | NULL    |       |
+| longitude     | double       | NO   |     | NULL    |       |
+| peoplevisited | int(11)      | YES  |     | NULL    |       |
+| likes         | int(11)      | YES  |     | NULL    |       |
+| rating        | int(11)      | YES  |     | NULL    |       |
+| locationtype  | varchar(100) | YES  |     | NULL    |       |
++---------------+--------------+------+-----+---------+-------+
+8 rows in set (0.01 sec)
+
+mysql> INSERT INTO info VALUE("Shanivar wada","A place of historical importance built by peshwas.",73.6666,56.8888,40,500,5,"Fort historical");
+Query OK, 1 row affected (0.33 sec)
+
+mysql> SELECT * FROM info;
++---------------+----------------------------------------------------+----------+-----------+---------------+-------+--------+-----------------+
+| Name          | description                                        | latitude | longitude | peoplevisited | likes | rating | locationtype    |
++---------------+----------------------------------------------------+----------+-----------+---------------+-------+--------+-----------------+
+| Shanivar wada | A place of historical importance built by peshwas. |  73.6666 |   56.8888 |            40 |   500 |      5 | Fort historical |
++---------------+----------------------------------------------------+----------+-----------+---------------+-------+--------+-----------------+
+1 row in set (0.00 sec)
+
+mysql> \q
+Bye
+
