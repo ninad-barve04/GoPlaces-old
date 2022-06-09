@@ -71,10 +71,12 @@ class _MapState extends State<MapState> {
       phone: "",
       region: "");
 
+
+
   Future<void> _onMapCreated(GoogleMapController controller) async {
     locations.Locations locs = await locations.getPointsOfInterest();
 
-     var iconMarker = await BitmapDescriptor.fromAssetImage(ImageConfiguration(devicePixelRatio: 3.2),"assets/images/marker_gp.png");
+     var iconMarker = await BitmapDescriptor.fromAssetImage(ImageConfiguration(size:Size(10,21)),"assets/images/marker_gp.png");
 
     pois = locs.pois;
     setState(() {
