@@ -40,27 +40,39 @@ class Region {
 @JsonSerializable()
 class Poi {
   Poi({
-    required this.address,
     required this.id,
-    required this.image,
-    required this.lat,
-    required this.lng,
     required this.name,
-    required this.phone,
-    required this.region,
+    required this.description,
+    required this.latitude,
+    required this.longitude,
+    required this.peoplevisited,
+    required this.likes,
+    required this.rating,
+    required this.locationtype,
+    required this.image1,
+    required this.image2,
+    required this.image3,
+    required this.address,
+    required this.cityname,
   });
 
   factory Poi.fromJson(Map<String, dynamic> json) => _$PoiFromJson(json);
   Map<String, dynamic> toJson() => _$PoiToJson(this);
 
-  final String address;
-  final String id;
-  final String image;
-  final double lat;
-  final double lng;
+  final int id;
   final String name;
-  final String phone;
-  final String region;
+  final String description;
+  final double latitude;
+  final double longitude;
+  final int peoplevisited;
+  final int likes;
+  final double rating;
+  final String locationtype;
+  final String image1;
+  final String image2;
+  final String image3;
+  final String address;
+  final String cityname;
 }
 
 @JsonSerializable()
@@ -74,6 +86,28 @@ class Locations {
   Map<String, dynamic> toJson() => _$LocationsToJson(this);
 
   final List<Poi> pois;
+}
+
+@JsonSerializable()
+class City {
+  City({required this.name, required this.id});
+
+  factory City.fromJson(Map<String, dynamic> json) => _$CityFromJson(json);
+  Map<String, dynamic> toJson() => _$CityToJson(this);
+
+  final String name;
+  final int id;
+}
+
+@JsonSerializable()
+class CityList {
+  CityList({required this.cities});
+
+  factory CityList.fromJson(Map<String, dynamic> json) =>
+      _$CityListFromJson(json);
+  Map<String, dynamic> toJson() => _$CityListToJson(this);
+
+  final List<City> cities;
 }
 
 Future<Locations> getPointsOfInterest() async {

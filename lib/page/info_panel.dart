@@ -25,15 +25,15 @@ class InfoPanelLayout extends StatelessWidget {
       indicatorBackgroundColor: Colors.grey,
       children: [
         Image.network(
-          poi.image,
+          poi.image1,
           fit: BoxFit.cover,
         ),
         Image.network(
-          poi.image,
+          poi.image2,
           fit: BoxFit.cover,
         ),
         Image.network(
-          poi.image,
+          poi.image3,
           fit: BoxFit.cover,
         ),
       ],
@@ -99,7 +99,7 @@ class InfoPanelLayout extends StatelessWidget {
                   child: Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: Text(
-                        poi.id,
+                        poi.description,
                         textDirection: TextDirection.ltr,
                         textAlign: TextAlign.justify,
                         style: const TextStyle(
