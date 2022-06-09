@@ -74,16 +74,20 @@ class _MapState extends State<MapState> {
   Future<void> _onMapCreated(GoogleMapController controller) async {
     locations.Locations locs = await locations.getPointsOfInterest();
 
+     var iconMarker = await BitmapDescriptor.fromAssetImage(ImageConfiguration(devicePixelRatio: 3.2),"assets/images/marker_gp.png");
+
     pois = locs.pois;
     setState(() {
       _markers.clear();
 
+   
       int idx = 0;
       for (final poi in pois) {
         final marker = Marker(
           markerId: MarkerId(poi.name),
           position: LatLng(poi.lat, poi.lng),
           visible: _visible,
+          icon: iconMarker,
           onTap: () {
             _visible = false;
             setState(() {
