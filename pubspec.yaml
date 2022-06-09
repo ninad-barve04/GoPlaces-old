@@ -39,6 +39,14 @@ dependencies:
   json_serializable: ^6.2.0
   google_sign_in: ^5.3.3
   sliding_up_panel: ^2.0.0+1
+  location: ^4.3.0
+  flutter_image_slideshow: any
+  flutter_rating_bar: ^4.0.1
+  like_button: ^2.0.4
+  geolocator: ^8.2.1
+  geocoding: ^2.0.4
+  flutter_polyline_points: ^1.0.0
+  permission_handler: ^8.0.0+2
 
 dev_dependencies:
   flutter_test:

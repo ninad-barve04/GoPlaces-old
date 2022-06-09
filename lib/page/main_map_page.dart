@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import '../src/locations.dart' as locations;
 import 'info_panel.dart' as infopanel;
 import 'app_info.dart' as appinfo;
+import './login.dart' as login;
 
 // class HomePage extends StatefulWidget {
 //   const HomePage({Key? key}) : super(key: key);
@@ -40,11 +42,7 @@ import 'app_info.dart' as appinfo;
 //     );
 //   }
 // }
-final GoogleSignIn _googleSignIn = GoogleSignIn(
-  scopes: [
-    'email'
-  ]
-);
+final GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email']);
 
 class MapState extends StatefulWidget {
   const MapState({Key? key}) : super(key: key);
@@ -54,12 +52,14 @@ class MapState extends StatefulWidget {
 }
 
 class _MapState extends State<MapState> {
-  final Map<String, Marker> _markers = {};
+  Map<String, Marker> _markers = {};
 
   final PanelController _pc = PanelController();
   bool _visible = true;
   int currentIndex = 0;
   List<locations.Poi> pois = [];
+
+  GoogleMapController? _mapController;
   locations.Poi currentPoi = locations.Poi(
       address: "",
       id: "",
@@ -71,24 +71,55 @@ class _MapState extends State<MapState> {
       phone: "",
       region: "");
 
+  _getCurrentLocation() async {
+    await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
+        .then((Position position) async {
+      setState(() {
+        _currentPosition = position;
+        if (_currentPosition != null) {
+          print('CURRENT POS: $_currentPosition');
+          final marker = Marker(
+            markerId: MarkerId('loc'),
+            position: LatLng(position.latitude, position.longitude),
+            visible: true,
+          );
+          _markers['loc'] = marker;
+          print('>>>>>>NEW MARKER');
+        }
 
+        // mapController.animateCamera(
+        //   CameraUpdate.newCameraPosition(
+        //     CameraPosition(
+        //       target: LatLng(position.latitude, position.longitude),
+        //       zoom: 18.0,
+        //     ),
+        //   ),
+        // );
+      });
+      //await _getAddress();
+    }).catchError((e) {
+      print(e);
+      print(">>>>>>>>>>>>>>err");
+    });
+  }
 
   Future<void> _onMapCreated(GoogleMapController controller) async {
+    _mapController = controller;
     locations.Locations locs = await locations.getPointsOfInterest();
 
-     var iconMarker = await BitmapDescriptor.fromAssetImage(ImageConfiguration(size:Size(10,21)),"assets/images/marker_gp.png");
+    var iconMarker = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(size: Size(10, 21)), "assets/images/marker_gp.png");
 
     pois = locs.pois;
     setState(() {
-      _markers.clear();
+      //  _markers.clear();
 
-   
       int idx = 0;
       for (final poi in pois) {
         final marker = Marker(
           markerId: MarkerId(poi.name),
           position: LatLng(poi.lat, poi.lng),
-          visible: _visible,
+          visible: true,
           icon: iconMarker,
           onTap: () {
             _visible = false;
@@ -104,10 +135,22 @@ class _MapState extends State<MapState> {
     });
   }
 
+  processDirectionRequest() async {
+    print(">>processDirectionRequest");
+
+    print(_markers['loc']);
+    await _getCurrentLocation();
+
+    print(_markers['loc']);
+  }
+
   GoogleSignInAccount? _currentUser;
+  String _city = "Pune";
+
+  Position? _currentPosition;
 
   @override
-  void initState(){
+  void initState() {
     _googleSignIn.onCurrentUserChanged.listen((account) {
       setState(() {
         _currentUser = account;
@@ -124,191 +167,186 @@ class _MapState extends State<MapState> {
       topRight: Radius.circular(30),
     );
     GoogleSignInAccount? user = _currentUser;
-    if(user !=null){
-    return MaterialApp(
-        home: Scaffold(
-      appBar: AppBar(
-        title: const Text("GoPlaces..."),
-        backgroundColor: const Color.fromARGB(255, 0, 92, 179),
-      ),
-      body: SlidingUpPanel(
-        controller: _pc,
-        parallaxEnabled: true,
-        parallaxOffset: 0.5,
-        minHeight: 0,
-        panel: infopanel.InfoPanelLayout(currentPoi),
-        borderRadius: radius,
-        body: GoogleMap(
-          onMapCreated: _onMapCreated,
-          initialCameraPosition: const CameraPosition(
-            target: LatLng(18.5293825, 73.8543523),
-            zoom: 12.0,
-          ),
-          markers: _markers.values.toSet(),
+    if (user != null) {
+      return MaterialApp(
+          home: Scaffold(
+        appBar: AppBar(
+          title: const Text("GoPlaces..."),
+          backgroundColor: const Color.fromARGB(255, 0, 92, 179),
         ),
-      ),
-      drawer: Drawer(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children:<Widget>[
-              DrawerHeader(decoration: BoxDecoration(image: DecorationImage(fit: BoxFit.fill,image: AssetImage('assets/images/drawer.jpg'),),),
-              child: Container(
-                child: Column(children: [
-                  SizedBox(
-                    height: 10,
-                  ),
-                  CircleAvatar(
-                    radius: 42,
-                    backgroundImage: AssetImage('GoogleUserCircleAvatar(identity: user)'),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                ],
-                ),
+        body: Stack(children: <Widget>[
+          SlidingUpPanel(
+            controller: _pc,
+            parallaxEnabled: true,
+            parallaxOffset: 0.5,
+            minHeight: 0,
+            panel:
+                infopanel.InfoPanelLayout(currentPoi, processDirectionRequest),
+            borderRadius: radius,
+            body: GoogleMap(
+              onMapCreated: _onMapCreated,
+              initialCameraPosition: const CameraPosition(
+                target: LatLng(18.5293825, 73.8543523),
+                zoom: 12.0,
               ),
-              ),
-              Container(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  ListTile(
-                    leading: GoogleUserCircleAvatar(identity: user),
-                    title: Text(user.displayName ?? ''),
-                    subtitle: Text(user.email),
-                  ),
-                  const SizedBox(height: 10,),
-                  ElevatedButton(
-                    onPressed: signOut, 
-                    child: const Text('Sign Out')),
-                ],
-              )),
-              Container(
-              color: Colors.white,
-              height: 50,
-              width: 100,
+              markers: _markers.values.toSet(),
             ),
-              Container(child: FlatButton(
-                color: Colors.blue,
-                textColor: Colors.white,
-                onPressed: () {
-                  Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const appinfo.Infopage()),
-                );
-
-                },
-                child: Text('App Info'),
-                ),
-                ),
-                
-            ],
           ),
-        ),
-    ));
-  }
-  else{
-    return MaterialApp(
-      home: Scaffold(
-      appBar: AppBar(
-        title: const Text("GoPlaces..."),
-        backgroundColor: const Color.fromARGB(255, 0, 92, 179),
-      ),
-      body: SlidingUpPanel(
-        controller: _pc,
-        parallaxEnabled: true,
-        parallaxOffset: 0.5,
-        minHeight: 0,
-        panel: infopanel.InfoPanelLayout(currentPoi),
-        borderRadius: radius,
-        body: GoogleMap(
-          onMapCreated: _onMapCreated,
-          initialCameraPosition: const CameraPosition(
-            target: LatLng(18.5293825, 73.8543523),
-            zoom: 12.0,
-          ),
-          markers: _markers.values.toSet(),
-        ),
-      ),
-        
+          // Container(
+          //         child: Text(
+          //           'Pune',
+          //           style: TextStyle(fontSize: 22, color: Colors.white, backgroundColor:Colors.blue),
+          //         ),
+          //         alignment: Alignment.topRight,
+          //       ),
+          Container(
+              alignment: Alignment.topRight,
+              padding: EdgeInsets.all(20),
+              child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    color: Colors
+                        .lightBlue[100], //background color of dropdown button
+                    border: Border.all(
+                        color: Colors.black38,
+                        width: 3), //border of dropdown button
+                  ),
+                  child: Padding(
+                      padding: const EdgeInsets.only(left: 30, right: 30),
+                      child: DropdownButton(
+                          value: _city,
+                          dropdownColor: Colors.lightBlue[100],
+                          items: [
+                            DropdownMenuItem(
+                              child: Text("Pune"),
+                              value: "Pune",
+                            ),
+                            DropdownMenuItem(
+                              child: Text("Mumbai"),
+                              value: "Mumbai",
+                            ),
+                            DropdownMenuItem(
+                              child: Text("Delhi"),
+                              value: "Delhi",
+                            )
+                          ],
+                          onChanged: (String? value) {
+                            if (_pc.isPanelOpen) {
+                              _pc.close();
+                            }
+                            setState(() {
+                              _city = value!;
+                            });
+                          },
+                          hint: Text("Select item")))))
+        ]),
         drawer: Drawer(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
-            children:<Widget>[
-              DrawerHeader(decoration: BoxDecoration(image: DecorationImage(fit: BoxFit.fill,image: AssetImage('assets/images/drawer.jpg'),),),
-              child: Container(
-                child: Column(children: [
-                  SizedBox(
-                    height: 10,
+            children: <Widget>[
+              DrawerHeader(
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    fit: BoxFit.fill,
+                    image: AssetImage('assets/images/drawer.jpg'),
                   ),
-                  CircleAvatar(
-                    radius: 42,
-                    backgroundImage: AssetImage('assets/images/user.jpg'),
+                ),
+                child: Container(
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 8,
+                      ),
+                      // GoogleUserCircleAvatar(identity: user),
+                      CircleAvatar(
+                        radius: 42,
+                        backgroundImage: NetworkImage(
+                            user.photoUrl ?? 'https://via.placeholder.com/150'),
+                      ),
+                      Text(user.displayName ?? '',
+                          style: TextStyle(color: Colors.white)),
+                      Text(user.email, style: TextStyle(color: Colors.white)),
+                      // SizedBox(
+                      //   height: 10,
+                      // ),
+                    ],
                   ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                ],
                 ),
               ),
-              ),
               Container(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  const SizedBox(height: 20,),
-                  const Text(
-                    '                    Not signed in',
-                    style: TextStyle(fontSize: 20),
-                  ),
-                  const SizedBox(height: 10,),
+                  // ListTile(
+                  //   leading: GoogleUserCircleAvatar(identity: user),
+                  //   title: Text(user.displayName ?? ''),
+                  //   subtitle: Text(user.email),
+                  // ),
+                  const SizedBox(height: 5),
                   ElevatedButton(
-                    onPressed: signIn, 
-                    child: const Text('Sign In')),
+                      onPressed: () => signOut(context),
+                      child: const Text('Sign Out')),
                 ],
               )),
               Container(
-              color: Colors.white,
-              height: 50,
-              width: 100,
-            ),
-              Container(child: FlatButton(
-                color: Colors.blue,
-                textColor: Colors.white,
-                onPressed: () {
-                  Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const appinfo.Infopage()),
-                );
-
-                },
-                child: Text('App Info'),
+                color: Colors.white,
+                height: 30,
+                width: 100,
+              ),
+              Container(
+                child: FlatButton(
+                  color: Colors.blue,
+                  textColor: Colors.white,
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const appinfo.Infopage()),
+                    );
+                  },
+                  child: Text('About App'),
                 ),
-                ),
-                
+              ),
             ],
           ),
         ),
-      ),
-    );
+      ));
+    } else {
+      return MaterialApp(
+          home: Scaffold(
+        appBar: AppBar(
+          title: const Text("GoPlaces..."),
+          backgroundColor: const Color.fromARGB(255, 0, 92, 179),
+        ),
+        body: SlidingUpPanel(
+          controller: _pc,
+          parallaxEnabled: true,
+          parallaxOffset: 0.5,
+          minHeight: 0,
+          panel: infopanel.InfoPanelLayout(currentPoi, processDirectionRequest),
+          borderRadius: radius,
+          body: const Text("GoPlaces.."),
+        ),
+      ));
+    }
   }
 }
+
+void signOut(BuildContext context) async {
+  _googleSignIn.disconnect();
+  Navigator.of(context).pushReplacement(
+    MaterialPageRoute(
+      builder: (context) => login.GoPlacesLogin(),
+    ),
+  );
 }
 
-void signOut(){
-    _googleSignIn.disconnect();
+Future<void> signIn() async {
+  try {
+    await _googleSignIn.signIn();
+  } catch (e) {
+    print('Error in signIn $e');
   }
-
-  Future<void> signIn() async{
-    try{
-      await _googleSignIn.signIn();
-    }
-    catch(e){
-      print('Error in signIn $e');
-    }
-  }
+}
 
 class MyStatefulWidget extends StatefulWidget {
   const MyStatefulWidget({Key? key}) : super(key: key);

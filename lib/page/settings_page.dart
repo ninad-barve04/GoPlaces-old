@@ -40,7 +40,7 @@ class SettingsPage extends StatelessWidget {
                           builder: (context) => const appinfo.Infopage()),
                     );
                   },
-                  child: const Text('App Info'),
+                  child: const Text('About App'),
                 ),
               ),
             ],

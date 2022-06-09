@@ -6,6 +6,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
+import 'package:permission_handler/permission_handler.dart';
 import 'main_map_page.dart';
 
 
@@ -32,6 +33,22 @@ class GoPlacesLoginState extends State<GoPlacesLogin> with TickerProviderStateMi
 
   late AnimationController controller;
 
+  Future<void> _checkPermission() async {
+    final serviceStatus = await Permission.locationWhenInUse.serviceStatus;
+    final isGpsOn = serviceStatus == ServiceStatus.enabled;
+    if (!isGpsOn) {
+      print('Turn on location services before requesting permission.');
+      return;
+    }
+
+    final status = await Permission.locationWhenInUse.request();
+    if (status == PermissionStatus.granted) {
+      print('Permission granted');
+    } else if (status == PermissionStatus.denied) {
+      print('Permission denied. Show a dialog and again ask for the permission');
+    } 
+  }
+
   @override
   void initState() {
     controller = AnimationController(
@@ -43,6 +60,7 @@ class GoPlacesLoginState extends State<GoPlacesLogin> with TickerProviderStateMi
     controller.repeat(reverse: true);
 
     super.initState();
+    _checkPermission();
     _googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount? account) {
       setState(() {
         _currentUser = account;
@@ -207,7 +225,7 @@ class GoPlacesLoginState extends State<GoPlacesLogin> with TickerProviderStateMi
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Google Sign In'),
+          title: const Text('GoPlaces'),
         ),
         body: ConstrainedBox(
           constraints: const BoxConstraints.expand(),
