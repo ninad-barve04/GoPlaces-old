@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'page/main_map_page.dart' as mainpage;
+import 'page/login.dart' as login;
 
 void main() => runApp(const MyApp());
 
@@ -12,7 +13,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'GoPlaces',
       theme: ThemeData(primarySwatch: Colors.blue),
-      home: const mainpage.MapState(),
+      home: const login.GoPlacesLogin(),
     );
   }
 }
