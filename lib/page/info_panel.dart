@@ -16,6 +16,10 @@ class InfoPanelLayout extends StatelessWidget {
 
   final Poi poi;
 
+  Widget standByImage(BuildContext context, Object exception, StackTrace? stackTrace) {
+      return  Image.asset('assets/images/noimage.jpeg');
+  }
+
   Widget getImageSlideShow() {
     return ImageSlideshow(
       width: 200,
@@ -27,14 +31,17 @@ class InfoPanelLayout extends StatelessWidget {
         Image.network(
           poi.image1,
           fit: BoxFit.cover,
+          errorBuilder: standByImage,
         ),
         Image.network(
           poi.image2,
           fit: BoxFit.cover,
+          errorBuilder: standByImage,
         ),
         Image.network(
           poi.image3,
           fit: BoxFit.cover,
+          errorBuilder: standByImage,
         ),
       ],
       onPageChanged: (value) {},

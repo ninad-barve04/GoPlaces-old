@@ -8,7 +8,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
-
+import 'package:fluttertoast/fluttertoast.dart';
 import '../src/locations.dart' as locations;
 import 'info_panel.dart' as infopanel;
 import 'app_info.dart' as appinfo;
@@ -126,16 +126,22 @@ class _MapState extends State<MapState> {
     });
   }
 
-  Future<void> _onMapCreated(GoogleMapController controller) async {
-    _mapController = controller;
-
+  Future<void> _createMapMarker() async
+  {
     var iconMarker = await BitmapDescriptor.fromAssetImage(
         ImageConfiguration(size: Size(10, 21)), "assets/images/marker_gp.png");
+
+    pois.clear();
+    _markers.clear();
+    _polylines.clear();
+    polylineCoordinates.clear();
 
     pois = await getLocations(_city);
     setState(() {
       //  _markers.clear();
 
+      double lt1=0.0,lng1=0.0,lt2=0.0,lng2=0.0;
+       
       int idx = 0;
       for (final poi in pois) {
         final marker = Marker(
@@ -146,16 +152,58 @@ class _MapState extends State<MapState> {
           onTap: () {
             _visible = false;
             setState(() {
-              currentIndex = idx++;
+              
               currentPoi = poi;
             });
             _pc.open();
-          },
+          }
         );
+        
         _markers[poi.name] = marker;
+        if (idx == 0) {
+          lt1 = poi.latitude;
+          lt2 = poi.latitude;
+          lng1 = poi.longitude;
+          lng2 = poi.longitude;
+        } else {
+          if (poi.latitude > lt1) lt2 = poi.latitude;
+          if (poi.latitude < lt2) lt1 = poi.latitude;
+          if (poi.longitude > lng1) lng2 = poi.longitude;
+          if (poi.longitude < lng2) lng1 = poi.longitude;
+        } 
+        idx++;
+        print( lt1);
+        print( lt2);
+        print(lng1);
+        print(lng2);
+
+      }
+
+      if( pois.length >0){
+        LatLngBounds bounds = LatLngBounds(northeast: LatLng(lt2, lng2), southwest: LatLng(lt1, lng1));
+        print( bounds);
+        _mapController?.animateCamera(CameraUpdate.newLatLngBounds(bounds,150));
+      }
+      else{
+        Fluttertoast.showToast(
+            msg: "No locations found for city " + _city,
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.CENTER,
+            backgroundColor: Color.fromARGB(255, 106, 138, 243),
+            textColor: Colors.white,
+            fontSize: 16.0
+        );
+        LatLng latLng = new LatLng(18.5293825, 73.8543523);
+         _mapController?.animateCamera(CameraUpdate.newLatLngZoom(latLng,12));
       }
       print(_markers);
     });
+  }
+
+  Future<void> _onMapCreated(GoogleMapController controller) async {
+    _mapController = controller;
+
+    await _createMapMarker();
   }
 
   _createPolylines(
@@ -177,29 +225,41 @@ class _MapState extends State<MapState> {
       travelMode: TravelMode.transit,
     );
 
+    double l1 = 0.0;
+    double l2 = 0.0;
     // Adding the coordinates to the list
     if (result.points.isNotEmpty) {
       result.points.forEach((PointLatLng point) {
         polylineCoordinates.add(LatLng(point.latitude, point.longitude));
-        print(point.latitude);
-        print(point.longitude);
+        l1 = l1 + point.latitude;
+        l2 = l2 + point.longitude;
       });
     }
-    print(polylineCoordinates.length);
+    int ln = polylineCoordinates.length;
+    if( ln > 0){
+      
+        l1 = l1 / ln;
+        l2 = l2 / ln;
 
-    // Defining an ID
-    PolylineId id = PolylineId('poly');
+      // Defining an ID
+      PolylineId id = PolylineId('poly');
 
-    // Initializing Polyline
-    Polyline polyline = Polyline(
-      polylineId: id,
-      color: Colors.red,
-      points: polylineCoordinates,
-      width: 3,
-    );
+      // Initializing Polyline
+      Polyline polyline = Polyline(
+        polylineId: id,
+        color: Colors.red,
+        points: polylineCoordinates,
+        width: 3,
+      );
+      setState(() {
+          _polylines[id] = polyline;
+      });
+      // Adding the polyline to the map
 
-    // Adding the polyline to the map
-    _polylines[id] = polyline;
+    LatLng latLng = LatLng(l1, l2);
+         _mapController?.animateCamera(CameraUpdate.newLatLngZoom(latLng,12));
+    }  
+  
   }
 
   processDirectionRequest() async {
@@ -207,10 +267,11 @@ class _MapState extends State<MapState> {
 
     await _getCurrentLocation();
 
-    // print(_currentPosition);
-    // print(currentPoi);
+    print(_currentPosition);
+    print(currentPoi);
 
-    // await _createPolylines(_currentPosition!.latitude, _currentPosition!.longitude,currentPoi.latitude,currentPoi.longitude);
+    await _createPolylines(_currentPosition!.latitude, _currentPosition!.longitude,currentPoi.latitude,currentPoi.longitude);
+
 
     // print(_markers['loc']);
   }
@@ -292,6 +353,14 @@ class _MapState extends State<MapState> {
     super.initState();
   }
 
+
+  void panelClosedCallback()
+  {
+    setState(() {
+      _polylines.clear();
+      polylineCoordinates.clear();
+    });
+  }
   @override
   Widget build(BuildContext context) {
     BorderRadiusGeometry radius = const BorderRadius.only(
@@ -315,6 +384,7 @@ class _MapState extends State<MapState> {
             parallaxEnabled: true,
             parallaxOffset: 0.5,
             minHeight: 0,
+            onPanelClosed: panelClosedCallback,
             panel:
                 infopanel.InfoPanelLayout(currentPoi, processDirectionRequest),
             borderRadius: radius,
@@ -366,13 +436,16 @@ class _MapState extends State<MapState> {
                           //   )
                           // ],
                           items: city_items,
-                          onChanged: (String? value) {
+                          onChanged: (String? value) async {
                             if (_pc.isPanelOpen) {
                               _pc.close();
                             }
                             setState(() {
                               _city = value!;
+                              
                             });
+
+                            await _createMapMarker();
                           },
                           hint: Text("Select item")))))
         ]),
@@ -459,6 +532,7 @@ class _MapState extends State<MapState> {
           parallaxEnabled: true,
           parallaxOffset: 0.5,
           minHeight: 0,
+          onPanelClosed: panelClosedCallback,
           panel: infopanel.InfoPanelLayout(currentPoi, processDirectionRequest),
           borderRadius: radius,
           body: const Text("GoPlaces.."),
