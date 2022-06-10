@@ -47,10 +47,14 @@ import './login.dart' as login;
 //     );
 //   }
 // }
-final GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email']);
+// final GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email']);
 
 class MapState extends StatefulWidget {
-  const MapState({Key? key}) : super(key: key);
+
+  final GoogleSignInAccount? currentUser;
+  final VoidCallback signout;
+
+  const MapState({Key? key, this.currentUser, required this.signout}) : super(key: key);
 
   @override
   State<MapState> createState() => _MapState();
@@ -58,11 +62,10 @@ class MapState extends StatefulWidget {
 
 class _MapState extends State<MapState> {
   Map<String, Marker> _markers = {};
-  Map<PolylineId,Polyline> _polylines = {};
+  Map<PolylineId, Polyline> _polylines = {};
 
   late PolylinePoints polylinePoints;
   List<LatLng> polylineCoordinates = [];
-
 
   final PanelController _pc = PanelController();
   bool _visible = true;
@@ -125,12 +128,11 @@ class _MapState extends State<MapState> {
 
   Future<void> _onMapCreated(GoogleMapController controller) async {
     _mapController = controller;
-    locations.Locations locs = await locations.getPointsOfInterest();
 
     var iconMarker = await BitmapDescriptor.fromAssetImage(
         ImageConfiguration(size: Size(10, 21)), "assets/images/marker_gp.png");
 
-    pois = locs.pois;
+    pois = await getLocations(_city);
     setState(() {
       //  _markers.clear();
 
@@ -152,6 +154,7 @@ class _MapState extends State<MapState> {
         );
         _markers[poi.name] = marker;
       }
+      print(_markers);
     });
   }
 
@@ -202,14 +205,12 @@ class _MapState extends State<MapState> {
   processDirectionRequest() async {
     print(">>processDirectionRequest");
 
-    
     await _getCurrentLocation();
 
     // print(_currentPosition);
     // print(currentPoi);
 
     // await _createPolylines(_currentPosition!.latitude, _currentPosition!.longitude,currentPoi.latitude,currentPoi.longitude);
-
 
     // print(_markers['loc']);
   }
@@ -241,50 +242,37 @@ class _MapState extends State<MapState> {
     }
   }
 
-  void getLocations(city) async {
+  Future<List<locations.Poi>> getLocations(city) async {
     http.Response resp = await http
         .get(Uri.parse("http://54.184.164.77:5000/locations/" + city));
 
+    List<locations.Poi> lcList = [];
     if (resp.statusCode == 200) {
       // If the server did return a 200 OK response,
       // then parse the JSON.
 
       List<dynamic> list = json.decode(resp.body);
-      // locations.CityList list =
-      //     locations.CityList.fromJson(jsonDecode(resp.body));
       var iconMarker = await BitmapDescriptor.fromAssetImage(
           ImageConfiguration(size: Size(10, 21)),
           "assets/images/marker_gp.png");
       int idx = 0;
       list.forEach((element) {
+        print(element);
         locations.Poi c1 = locations.Poi.fromJson(element);
-        pois.add(c1);
-        final marker = Marker(
-          markerId: MarkerId(c1.name),
-          position: LatLng(c1.latitude, c1.longitude),
-          visible: true,
-          icon: iconMarker,
-          onTap: () {
-            _visible = false;
-            setState(() {
-              currentIndex = idx++;
-              currentPoi = c1;
-            });
-            _pc.open();
-          },
-        );
-        _markers[c1.name] = marker;
+        lcList.add(c1);
       });
     } else {
       // If the server did not return a 200 OK response,
       // then throw an exception.
       throw Exception('Failed to load album');
     }
+
+    return lcList;
   }
 
   // I want list
 
-  GoogleSignInAccount? _currentUser;
+
   String _city = "Pune";
 
   Position? _currentPosition;
@@ -293,14 +281,14 @@ class _MapState extends State<MapState> {
 
   @override
   void initState() {
-    _googleSignIn.onCurrentUserChanged.listen((account) {
-      setState(() {
-        _currentUser = account;
-      });
-    });
-    _googleSignIn.signInSilently();
+
+    // _googleSignIn.onCurrentUserChanged.listen((account) {
+    //   setState(() {
+    //     _currentUser = account;
+    //   });
+    // });
+    //_googleSignIn.signInSilently();
     getCities();
-    getLocations(_city);
     super.initState();
   }
 
@@ -310,7 +298,8 @@ class _MapState extends State<MapState> {
       topLeft: Radius.circular(30),
       topRight: Radius.circular(30),
     );
-    GoogleSignInAccount? user = _currentUser;
+    GoogleSignInAccount? user = widget.currentUser;
+     
     // List cities = getCities() as List;
 
     if (user != null) {
@@ -431,7 +420,7 @@ class _MapState extends State<MapState> {
                   // ),
                   const SizedBox(height: 5),
                   ElevatedButton(
-                      onPressed: () => signOut(context),
+                      onPressed: () => signOut(context, widget.signout),
                       child: const Text('Sign Out')),
                 ],
               )),
@@ -479,8 +468,9 @@ class _MapState extends State<MapState> {
   }
 }
 
-void signOut(BuildContext context) async {
-  _googleSignIn.disconnect();
+void signOut(BuildContext context,VoidCallback logout) async {
+ 
+  logout();
   Navigator.of(context).pushReplacement(
     MaterialPageRoute(
       builder: (context) => login.GoPlacesLogin(),
@@ -488,13 +478,13 @@ void signOut(BuildContext context) async {
   );
 }
 
-Future<void> signIn() async {
-  try {
-    await _googleSignIn.signIn();
-  } catch (e) {
-    print('Error in signIn $e');
-  }
-}
+// Future<void> signIn() async {
+//   try {
+//     await _googleSignIn.signIn();
+//   } catch (e) {
+//     print('Error in signIn $e');
+//   }
+// }
 
 class MyStatefulWidget extends StatefulWidget {
   const MyStatefulWidget({Key? key}) : super(key: key);
