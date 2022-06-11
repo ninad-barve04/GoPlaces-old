@@ -65,8 +65,8 @@ class Poi {
   final double latitude;
   final double longitude;
   final int peoplevisited;
-  final int likes;
-  final double rating;
+  late  int likes;
+  late  double rating;
   final String locationtype;
   final String image1;
   final String image2;

@@ -276,6 +276,58 @@ class _MapState extends State<MapState> {
     // print(_markers['loc']);
   }
 
+  void processVisitLaterRequest(int locnid)async{
+
+    Map<String,dynamic> data = Map<String,dynamic>();
+    data['email'] = widget.currentUser?.email;
+    data['locid'] = locnid;
+    var body = json.encode(data);
+     http.Response resp =
+        await http.post(Uri.parse("http://54.184.164.77:5000/adduserloc"), headers: {"Content-Type": "application/json"}, body:body);
+    if (resp.statusCode == 200) {
+
+      Fluttertoast.showToast(
+            msg: "New location added in visit later",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.CENTER,
+            backgroundColor: Color.fromARGB(255, 106, 138, 243),
+            textColor: Colors.white,
+            fontSize: 16.0
+        ); 
+    }
+  
+  }
+
+  void addLike(int locnid, int likes )async{
+
+    Map<String,dynamic> data = Map<String,dynamic>();
+    data['id'] = locnid;
+    data['like'] = likes;
+    var body = json.encode(data);
+     http.Response resp =
+        await http.post(Uri.parse("http://54.184.164.77:5000/addlike"), headers: {"Content-Type": "application/json"}, body:body);
+    if (resp.statusCode == 200) {
+      print( resp.statusCode);
+    }
+  
+  }
+
+  void addRating(int locnid, double existintRating, double newRating )async{
+
+    double modRating = (existintRating + newRating)/2.0;
+
+    Map<String,dynamic> data = Map<String,dynamic>();
+    data['id'] = locnid;
+    data['rating'] = modRating;
+    var body = json.encode(data);
+     http.Response resp =
+        await http.post(Uri.parse("http://54.184.164.77:5000/addrating"), headers: {"Content-Type": "application/json"}, body:body);
+    if (resp.statusCode == 200) {
+      print( resp.statusCode);
+    }
+  
+  }
+
   void getCities() async {
     http.Response resp =
         await http.get(Uri.parse("http://54.184.164.77:5000/city"));
@@ -353,6 +405,10 @@ class _MapState extends State<MapState> {
     super.initState();
   }
 
+  void showMyPlaces()
+  {
+
+  }
 
   void panelClosedCallback()
   {
@@ -386,7 +442,10 @@ class _MapState extends State<MapState> {
             minHeight: 0,
             onPanelClosed: panelClosedCallback,
             panel:
-                infopanel.InfoPanelLayout(currentPoi, processDirectionRequest),
+                infopanel.InfoPanelLayout(currentPoi, processDirectionRequest,
+                 processVisitLaterRequest,
+                 addLike,
+                 addRating),
             borderRadius: radius,
             body: GoogleMap(
               onMapCreated: _onMapCreated,
@@ -486,12 +545,10 @@ class _MapState extends State<MapState> {
                   child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  // ListTile(
-                  //   leading: GoogleUserCircleAvatar(identity: user),
-                  //   title: Text(user.displayName ?? ''),
-                  //   subtitle: Text(user.email),
-                  // ),
-                  const SizedBox(height: 5),
+                  ElevatedButton(
+                      onPressed: () => showMyPlaces(),
+                      child: const Text('My places')),
+              
                   ElevatedButton(
                       onPressed: () => signOut(context, widget.signout),
                       child: const Text('Sign Out')),
@@ -499,7 +556,7 @@ class _MapState extends State<MapState> {
               )),
               Container(
                 color: Colors.white,
-                height: 30,
+                height: 50,
                 width: 100,
               ),
               Container(
@@ -533,7 +590,11 @@ class _MapState extends State<MapState> {
           parallaxOffset: 0.5,
           minHeight: 0,
           onPanelClosed: panelClosedCallback,
-          panel: infopanel.InfoPanelLayout(currentPoi, processDirectionRequest),
+          panel: infopanel.InfoPanelLayout(currentPoi, processDirectionRequest, 
+          processVisitLaterRequest,
+                 addLike,
+                 addRating,
+          ),
           borderRadius: radius,
           body: const Text("GoPlaces.."),
         ),

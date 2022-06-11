@@ -49,6 +49,16 @@ class GoPlacesLoginState extends State<GoPlacesLogin> with TickerProviderStateMi
     } 
   }
 
+  addUserAccount( String email) async{
+    Map<String,dynamic> data = Map<String,dynamic>();
+    data['email'] = email;
+    
+    var body = json.encode(data);
+     http.Response resp =
+        await http.post(Uri.parse("http://54.184.164.77:5000/adduser"), headers: {"Content-Type": "application/json"}, body:body);
+     print( resp.statusCode);
+  }
+
   @override
   void initState() {
     controller = AnimationController(
@@ -68,6 +78,8 @@ class GoPlacesLoginState extends State<GoPlacesLogin> with TickerProviderStateMi
        final GoogleSignInAccount? user = _currentUser;
        if (user != null) {
            _contactText = user.email;
+
+           addUserAccount(_contactText);
             Future.delayed(Duration(seconds: 3), () {
 
             log('data: $user.email');
