@@ -11,10 +11,20 @@ class InfoPanelLayout extends StatelessWidget {
   // ignore: use_key_in_widget_constructors
 
   final VoidCallback letsGoSelected;
+  final void Function(int) visitLaterSelected;
+  final void Function(int, double, double) addRating;
+  final void Function(int, int) addLike;
 
-  const InfoPanelLayout(this.poi, this.letsGoSelected);
+  InfoPanelLayout(this.poi, this.letsGoSelected, 
+  this.visitLaterSelected,
+  this.addLike,
+  this.addRating);
 
-  final Poi poi;
+  Poi poi;
+
+  Widget standByImage(BuildContext context, Object exception, StackTrace? stackTrace) {
+      return  Image.asset('assets/images/noimage.jpeg');
+  }
 
   Widget getImageSlideShow() {
     return ImageSlideshow(
@@ -27,20 +37,38 @@ class InfoPanelLayout extends StatelessWidget {
         Image.network(
           poi.image1,
           fit: BoxFit.cover,
+          errorBuilder: standByImage,
         ),
         Image.network(
           poi.image2,
           fit: BoxFit.cover,
+          errorBuilder: standByImage,
         ),
         Image.network(
           poi.image3,
           fit: BoxFit.cover,
+          errorBuilder: standByImage,
         ),
       ],
       onPageChanged: (value) {},
       autoPlayInterval: 3000,
       isLoop: true,
     );
+  }
+
+
+  Future<bool> onLikeTapped( bool isLiked){
+    int lk = poi.likes;
+    bool like = !isLiked;
+    if( like){
+      lk++;
+    }else{
+      lk--;
+    }
+    addLike(poi.id,lk);
+
+    poi.likes = lk;
+    return  Future.value(like);
   }
 
   @override
@@ -66,22 +94,29 @@ class InfoPanelLayout extends StatelessWidget {
             children: <Widget>[
               Padding(
                   padding: const EdgeInsets.symmetric(vertical: 2.0),
-                  child: RatingBarIndicator(
-                    rating: 2.75,
-                    itemBuilder: (context, index) => const Icon(
+                  child: RatingBar.builder(
+                    minRating: 0,
+                    maxRating: 5,
+                    initialRating:poi.rating,
+                    allowHalfRating: true,
+                    itemBuilder: (context,_) => const Icon(
                       Icons.star,
-                      color: Colors.amber,
+                      color:Colors.amber
                     ),
-                    itemCount: 5,
                     itemSize: 30.0,
-                    direction: Axis.horizontal,
+                    onRatingUpdate: (rating){
+                      double d1 = (poi.rating+rating)/2.0;
+                      poi.rating = d1;
+                      addRating(poi.id,poi.rating, rating);
+                      print (rating);
+                    }
                   )),
               SizedBox(width: 20),
               Padding(
                   padding: const EdgeInsets.symmetric(vertical: 2.0),
                   child: LikeButton(
                     size: 15,
-                    likeCount: 12,
+                    likeCount: poi.likes,
                     likeCountPadding: const EdgeInsets.all(4.0),
                     likeBuilder: (bool like) {
                       return Icon(
@@ -89,6 +124,8 @@ class InfoPanelLayout extends StatelessWidget {
                         color: Colors.blue,
                       );
                     },
+                    onTap: onLikeTapped
+                      
                   ))
             ],
           )),
@@ -120,7 +157,8 @@ class InfoPanelLayout extends StatelessWidget {
               Padding(
                   padding: const EdgeInsets.symmetric(vertical: 2.0),
                   child: ElevatedButton(
-                      onPressed: () => {}, child: const Text("Visit Later")))
+                      onPressed: () => visitLaterSelected(poi.id), 
+                      child: const Text("Visit Later")))
             ],
           ))
         ],
