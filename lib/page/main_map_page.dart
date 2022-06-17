@@ -14,7 +14,7 @@ import '../src/locations.dart' as locations;
 import 'info_panel.dart' as infopanel;
 import 'app_info.dart' as appinfo;
 import './login.dart' as login;
-
+import 'nearest.dart' as nearest;
 // class HomePage extends StatefulWidget {
 //   const HomePage({Key? key}) : super(key: key);
 //
@@ -514,7 +514,9 @@ class _MapState extends State<MapState> {
                             await _createMapMarker();
                           },
                           hint: Text("Select item")))))
-        ]),
+        ]
+        ),
+
         drawer: Drawer(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -559,6 +561,16 @@ class _MapState extends State<MapState> {
                   ElevatedButton(
                       onPressed: () => signOut(context, widget.signout),
                       child: const Text('Sign Out')),
+
+                  ElevatedButton(
+                      onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => nearest.Home()),
+                    );
+                      },
+                      child: const Text('Make a trip for me')),
                 ],
               )),
               Container(
