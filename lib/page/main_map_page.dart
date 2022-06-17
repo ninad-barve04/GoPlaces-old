@@ -14,6 +14,41 @@ import '../src/locations.dart' as locations;
 import 'info_panel.dart' as infopanel;
 import 'app_info.dart' as appinfo;
 import './login.dart' as login;
+import 'nearest.dart' as nearest;
+// class HomePage extends StatefulWidget {
+//   const HomePage({Key? key}) : super(key: key);
+//
+//   @override
+//   State<HomePage> createState() => _HomePage();
+// }
+//
+// class _HomePage extends State<HomePage> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       home: Scaffold(
+//         appBar: AppBar(
+//           title: const Text("MapApp"),
+//           backgroundColor: const Color.fromARGB(255, 8, 214, 118),
+//           actions: [
+//             IconButton(
+//               onPressed: () {
+//                 Navigator.push(
+//                   context,
+//                   MaterialPageRoute(
+//                       builder: (context) => const settingspage.SettingsPage()),
+//                 );
+//               },
+//               icon: const Icon(Icons.menu),
+//             ),
+//           ],
+//         ),
+//         body: const MapState(),
+//       ),
+//     );
+//   }
+// }
+// final GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email']);
 
 class MapState extends StatefulWidget {
   final GoogleSignInAccount? currentUser;
@@ -510,6 +545,15 @@ class _MapState extends State<MapState> {
                   ElevatedButton(
                       onPressed: () => signOut(context, widget.signout),
                       child: const Text('Sign Out')),
+                  ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => nearest.Home()),
+                        );
+                      },
+                      child: const Text('Make a trip for me')),
                 ],
               )),
               Container(
