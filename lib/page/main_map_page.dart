@@ -140,7 +140,7 @@ class _MapState extends State<MapState> {
     setState(() {
       //  _markers.clear();
 
-      double lt1 = 0.0, lng1 = 0.0, lt2 = 0.0, lng2 = 0.0;
+      double x0 = 0.0, x1 = 0.0, y0 = 0.0, y1 = 0.0;
 
       int idx = 0;
       for (final poi in pois) {
@@ -159,26 +159,21 @@ class _MapState extends State<MapState> {
 
         _markers[poi.name] = marker;
         if (idx == 0) {
-          lt1 = poi.latitude;
-          lt2 = poi.latitude;
-          lng1 = poi.longitude;
-          lng2 = poi.longitude;
+          x0 = x1 = poi.latitude;
+          y0 = y1 = poi.longitude;
         } else {
-          if (poi.latitude > lt1) lt2 = poi.latitude;
-          if (poi.latitude < lt2) lt1 = poi.latitude;
-          if (poi.longitude > lng1) lng2 = poi.longitude;
-          if (poi.longitude < lng2) lng1 = poi.longitude;
+          if (poi.latitude > x1) x1 = poi.latitude;
+          if (poi.latitude < x0) x0 = poi.latitude;
+          if (poi.longitude > y1) y1 = poi.longitude;
+          if (poi.longitude < y0) y0 = poi.longitude;
         }
         idx++;
-        print(lt1);
-        print(lt2);
-        print(lng1);
-        print(lng2);
+         
       }
 
       if (pois.length > 0) {
         LatLngBounds bounds = LatLngBounds(
-            northeast: LatLng(lt2, lng2), southwest: LatLng(lt1, lng1));
+            northeast: LatLng(x1, y1), southwest: LatLng(x0, y0));
         print(bounds);
         _mapController
             ?.animateCamera(CameraUpdate.newLatLngBounds(bounds, 150));
@@ -543,9 +538,6 @@ class _MapState extends State<MapState> {
                       onPressed: () => showMyPlaces(),
                       child: const Text('My places')),
                   ElevatedButton(
-                      onPressed: () => signOut(context, widget.signout),
-                      child: const Text('Sign Out')),
-                  ElevatedButton(
                       onPressed: () {
                         Navigator.push(
                           context,
@@ -554,6 +546,9 @@ class _MapState extends State<MapState> {
                         );
                       },
                       child: const Text('Make a trip for me')),
+                  ElevatedButton(
+                      onPressed: () => signOut(context, widget.signout),
+                      child: const Text('Sign Out')),
                 ],
               )),
               Container(
